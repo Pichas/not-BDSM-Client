@@ -6,27 +6,19 @@
 #include <imgui.h>
 
 #include <string_view>
+#include <iostream>
 
 namespace BDSM
 {
-	class Window
-	{
-	public:
-		Window(std::string_view title, ImVec2 windowSize);
+struct Window
+{
+	Window(std::string_view title, ImVec2 windowSize);
+	~Window();
 
-		SDL_Window* GetWindow();
-		SDL_Renderer* GetRenderer();
+	void Draw();
 
-		const ImVec4& GetClearColor();
-		void SetClearColor(ImVec4 clearColor);
-
-		void Draw();
-
-		~Window();
-	private:
-
-		ImVec4 m_clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-		SDL_Window* m_window = nullptr;
-		SDL_Renderer* m_renderer = nullptr;
-	};
+	ImColor clearColor = ImColor(115, 140, 153);
+	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+};
 }

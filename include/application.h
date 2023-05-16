@@ -1,32 +1,36 @@
 #pragma once 
 
+#include <vector>
+#include <memory>
+
 #include "window.h"
+#include "../include/leftpanel.h"
 
 namespace BDSM
 {
-	class Application
-	{
-	public:
 
-		Application() = delete;
-		Application(Application&) = delete;
-		Application(Application&&) = delete;
-		Application(std::string_view title, ImVec2 windowSize = { 1280, 720 });
 
-		Application& operator=(Application&) = delete;
-		Application& operator=(Application&&) = delete;
+struct Application final
+{
+	Application() = delete;
+	Application(const Application&) = delete;
+	Application(Application&&) = delete;
+	Application& operator=(const Application&) = delete;
+	Application& operator=(Application&&) = delete;
 
-		Window* GetWindow();
+	Application(std::string_view title, ImVec2 windowSize = { 1280, 720 });
+	virtual ~Application(){};
+	
+	void Run();
 
-		void Run();
+private:
+	void StartFrame();
+	void EndFrame();
+	bool ProcessEvents();
 
-		~Application();
 
-	private:
-		Window* m_window = nullptr;
-	protected:
-		virtual void Setup() = 0;
-		virtual void Update() = 0;
-		virtual void Draw() = 0;
-	};
+	std::vector<std::shared_ptr<Panel>> m_panels;
+	std::shared_ptr<Window>m_window;
+};
+
 }
